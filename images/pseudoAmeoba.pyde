@@ -83,7 +83,7 @@ for numCurves in range(6,10):
         drawAmeoba(100,250,250,numPoints,numCurves)
         endShape()
         
-        filename = ("/Users/caitlyn/documents/Dartmouth/wheatlab/universal_contours/images/PS1_" 
+        filename = ("path" 
                     + str(numPoints) 
                     + "_" 
                     + str(numCurves)
