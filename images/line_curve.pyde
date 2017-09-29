@@ -74,7 +74,7 @@ for prop in range(7,11):
         s.endShape(CLOSE)    
         shape(s)
     
-        filename = ("/Users/caitlyn/documents/Dartmouth/wheatlab/universal_contours/images/linecurve_" 
+        filename = ("~path" 
                      + str(num_vertices) + "_" + str(int(num_curves)) + "_" + str(t))
         save(filename)
         
