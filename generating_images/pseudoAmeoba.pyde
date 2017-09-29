@@ -93,6 +93,6 @@ for numCurves in range(6,10):
         numImages += 1
             
 #print points
-
+ 
 
         
