@@ -63,3 +63,4 @@ for sc in range(1,14):
         if file.find("_") != -1: 
             os.remove(os.path.join(scDir,file))
         
+ 
