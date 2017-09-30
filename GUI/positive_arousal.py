@@ -173,7 +173,7 @@ for trial in range(13):
         mywin.flip()
 
         if mouse.isPressedIn(peaceful_button, buttons=[0]):
-            peaceful_button.setFillColor(color = (195,219,222), colorSpace='rgb255')
+            peaceful_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
             if stim_type == "images":
                 blob.draw()
             if stim_type == "sounds":
