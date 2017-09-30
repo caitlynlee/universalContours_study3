@@ -130,7 +130,7 @@ for trial in range(13):
                                            vertices = button_vertices,
                                            lineColor=(0,0,0),
                                            lineColorSpace = 'rgb255',
-                                           pos = (-100,100),
+                                           pos = (-200,100),
                                            fillColor = (225,225,225),
                                            fillColorSpace = 'rgb255')
             play_button.draw()
