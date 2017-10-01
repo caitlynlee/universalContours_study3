@@ -70,12 +70,20 @@ angry_button_text = visual.TextStim(mywin, text="Angry", color=(0,0,0),
 play_button_text = visual.TextStim(mywin,text="Click play button to play sound",
                                    color=(0,0,0), colorSpace='rgb255',
                                    pos=(0,0.2), height=0.05)
-
 button_vertices = [[-20,33],[-20,-13],[20,10]]
 play_button = visual.ShapeStim(mywin, units = 'pix', vertices = button_vertices,
                                lineColor=(0,0,0),lineColorSpace = 'rgb255',
                                pos = (0,0), fillColor = (255,255,255),
                                fillColorSpace = 'rgb255')
+
+# another sound related button - for testing mostly
+noSound_button_text = visual.TextStim(mywin,text="Could not hear sound",
+                                   color=(0,0,0), colorSpace='rgb255',
+                                   pos=(0,-300), height=20, units = 'pix')
+noSound_button = visual.Rect(mywin, width=200, height=30, units='pix',
+                             lineColor=(0,0,0), lineColorSpace='rgb255',
+                             pos=(0,-300), fillColor = (255,255,255),
+                             fillColorSpace = 'rgb255')
 
 # getting some random order to present stimuli (z-score bins)
 order = random.sample(range(13), 13)
@@ -228,6 +236,9 @@ for trial in range(13):
             play_button.draw()
             play_button_text.draw()
 
+            noSound_button.draw()
+            noSound_button_text.draw()
+
             angry_button.draw()
             angry_button_text.draw()
 
@@ -239,6 +250,30 @@ for trial in range(13):
             mouse.clickReset()
             core.wait(0.2)
             soundClip.play()
+
+
+        if mouse.isPressedIn(noSound_button, buttons = [0]):
+            soundClip.stop()
+            play_button.draw()
+            play_button_text.draw()
+
+            excited_button.draw()
+            excited_button_text.draw()
+
+            peaceful_button.draw()
+            peaceful_button_text.draw()
+
+            noSound_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
+            noSound_button.draw()
+            noSound_button_text.draw()
+
+            mywin.flip()
+
+            mouse.clickReset()
+            core.wait(0.2)
+
+            response_dict[file] = "NONE"
+            choice = True
 
 
 ###
