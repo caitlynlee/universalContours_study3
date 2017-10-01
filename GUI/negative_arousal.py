@@ -170,6 +170,10 @@ for trial in range(13):
             play_button_text.draw()
             play_button.draw()
 
+            noSound_button.setFillColor(color = (255,255,255),
+                                        colorSpace='rgb255')
+            noSound_button.draw()
+            noSound_button_text.draw()
 
         sad_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
         sad_button.draw()
@@ -257,11 +261,11 @@ for trial in range(13):
             play_button.draw()
             play_button_text.draw()
 
-            excited_button.draw()
-            excited_button_text.draw()
+            sad_button.draw()
+            sad_button_text.draw()
 
-            peaceful_button.draw()
-            peaceful_button_text.draw()
+            angry_button.draw()
+            angry_button_text.draw()
 
             noSound_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
             noSound_button.draw()
