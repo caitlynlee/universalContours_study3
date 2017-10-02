@@ -5,7 +5,6 @@ import itertools
 import random
 import json
 
-
 ###
 ### Experiment data
 ###
@@ -83,6 +82,42 @@ noSound_button = visual.Rect(mywin, width=200, height=30, units='pix',
 stimulus_dir = os.path.join(os.path.expanduser("~"),"Documents", "Dartmouth",
                             "wheatlab","universal_contours", "STIMULI")
 
+###
+### Show instruction screen
+###
+instructions = ("In the following task, you will be presented with both visual"
+                + " and auditory stimuli. For each, click the button at the"
+                + " bottom of the screen that best fits. Sounds may be played"
+                + " more than once.\n\n\n Click the button to start")
+instruction_text = visual.TextStim(mywin,text=instructions,
+                                   color=(0,0,0), colorSpace='rgb255',
+                                   pos=(0,100), height=20, units = 'pix',
+                                   wrapWidth = 500)
+continue_text = visual.TextStim(mywin,text="Start",
+                                   color=(0,0,0), colorSpace='rgb255',
+                                   pos=(0,-50), height=20, units = 'pix')
+continue_button = visual.Rect(mywin, width=150, height=50, units='pix',
+                             lineColor=(0,0,0), lineColorSpace='rgb255',
+                             pos=(0,-50), fillColor = (255,255,255),
+                             fillColorSpace = 'rgb255')
+ready = False
+while not ready:
+    instruction_text.draw()
+
+    continue_button.draw()
+    continue_text.draw()
+
+    mywin.flip()
+    if mouse.isPressedIn(continue_button, buttons=[0]):
+        continue_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
+        instruction_text.draw()
+
+        continue_button.draw()
+        continue_text.draw()
+        mywin.flip()
+        
+        core.wait(0.2)
+        ready = True
 
 ###
 ### Now present the stimuli
