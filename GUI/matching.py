@@ -60,16 +60,16 @@ ratingScale = visual.RatingScale(mywin, low=1, high=200, marker = mark,
 # the play button for sounds
 play_button_text = visual.TextStim(mywin,text="Click play button to play sound",
                                    color=(0,0,0), colorSpace='rgb255',
-                                   units = 'pix', pos=(-200,150), height=16)
+                                   units = 'pix', pos=(-200,150), height=18)
 button_vertices = [[-20,33],[-20,-13],[20,10]]
 
 # another sound related button - for testing mostly
 noSound_button_text = visual.TextStim(mywin,text="Could not hear sound",
                                    color=(0,0,0), colorSpace='rgb255',
-                                   pos=(0,-300), height=20, units = 'pix')
-noSound_button = visual.Rect(mywin, width=200, height=30, units='pix',
+                                   pos=(-200,0), height=12, units = 'pix')
+noSound_button = visual.Rect(mywin, width=150, height=30, units='pix',
                              lineColor=(0,0,0), lineColorSpace='rgb255',
-                             pos=(0,-300), fillColor = (255,255,255),
+                             pos=(-200,-0), fillColor = (255,255,255),
                              fillColorSpace = 'rgb255')
 
 # Set the stimulus directory
@@ -88,6 +88,45 @@ rand_order = random.sample(range(12),12)
 for i in range(12):
     present_order.append(present_pairs[rand_order[i]%6])
 present_order.append(present_pairs[random.randint(0,5)])
+
+
+###
+### Show instruction screen
+###
+instructions = ("In the following task, you will be presented with both visual"
+                + " and auditory stimuli. Click and drag along the scale at the"
+                + " bottom of the screen to reflect how well the image and sound"
+                + " match. Each sound may be played more than once.\n\n\n"
+                + " Click the button to start")
+instruction_text = visual.TextStim(mywin,text=instructions,
+                                   color=(0,0,0), colorSpace='rgb255',
+                                   pos=(0,100), height=20, units = 'pix',
+                                   wrapWidth = 500)
+continue_text = visual.TextStim(mywin,text="Start",
+                                   color=(0,0,0), colorSpace='rgb255',
+                                   pos=(0,-50), height=20, units = 'pix')
+continue_button = visual.Rect(mywin, width=150, height=50, units='pix',
+                             lineColor=(0,0,0), lineColorSpace='rgb255',
+                             pos=(0,-50), fillColor = (255,255,255),
+                             fillColorSpace = 'rgb255')
+ready = False
+while not ready:
+    instruction_text.draw()
+
+    continue_button.draw()
+    continue_text.draw()
+
+    mywin.flip()
+    if mouse.isPressedIn(continue_button, buttons=[0]):
+        continue_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
+        instruction_text.draw()
+
+        continue_button.draw()
+        continue_text.draw()
+        mywin.flip()
+
+        core.wait(0.2)
+        ready = True
 
 
 ###

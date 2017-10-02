@@ -85,8 +85,8 @@ stimulus_dir = os.path.join(os.path.expanduser("~"),"Documents", "Dartmouth",
 ###
 ### Show instruction screen
 ###
-instructions = ("In the following task, you will be presented with both visual"
-                + " and auditory stimuli. For each, click the button at the"
+instructions = ("In the following task, you will be presented with either visual"
+                + " or auditory stimuli. For each, click the button at the"
                 + " bottom of the screen that best fits. Sounds may be played"
                 + " more than once.\n\n\n Click the button to start")
 instruction_text = visual.TextStim(mywin,text=instructions,
@@ -115,7 +115,7 @@ while not ready:
         continue_button.draw()
         continue_text.draw()
         mywin.flip()
-        
+
         core.wait(0.2)
         ready = True
 
