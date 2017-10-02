@@ -182,7 +182,7 @@ for trial in range(13):
             break
 
     #if sound is still playing, stop
-    soundClip.stop() 
+    soundClip.stop()
 
     # add response to dictionary, whether or not heard sound
     if noSound:
@@ -190,6 +190,8 @@ for trial in range(13):
     else:
         response_dict[trial] = ratingScale.getRating()/2
         ratingScale.reset()
+
+    mywin.flip()
 
 ###
 ### write data to files

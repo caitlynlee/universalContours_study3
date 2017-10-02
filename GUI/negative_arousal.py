@@ -14,7 +14,6 @@ output_dir = os.path.join(os.path.expanduser("~"),"Documents", "Dartmouth", "whe
 sub_id = raw_input("Enter subject_id: ")
 subject_dir = os.path.join(output_dir,str(sub_id))
 
-
 if not os.path.exists(subject_dir):
     sub_dict = {}
     os.mkdir(subject_dir)
@@ -29,13 +28,8 @@ if not os.path.exists(subject_dir):
     with open(sub_dict_path, 'w') as f:
         json.dump(sub_dict, f, sort_keys=True, indent=4)
 
-order_data_path = os.path.join(subject_dir, 'NA_presentation_order_data.json')
-order_data = open(order_data_path, 'w')
-stim_dict = {}
-
-stim_response_path = os.path.join(subject_dir, 'NA_stim_response_data.json')
-stim_response = open(stim_response_path, 'w')
-response_dict = {}
+# get number of runs:
+num_runs = input("Number of runs: ")
 
 
 ###
@@ -85,210 +79,211 @@ noSound_button = visual.Rect(mywin, width=200, height=30, units='pix',
                              pos=(0,-300), fillColor = (255,255,255),
                              fillColorSpace = 'rgb255')
 
-# getting some random order to present stimuli (z-score bins)
-order = random.sample(range(13), 13)
-#print order
-
 # Set the stimulus directory
 stimulus_dir = os.path.join(os.path.expanduser("~"),"Documents", "Dartmouth",
                             "wheatlab","universal_contours", "STIMULI")
-
-# generating random positions that will be sound/image
-# there will be 6 of one and 7 of the other, pick that randomly too
-# and then make sure that there are equal generators of each
-indices = random.sample(range(13),13)
-
-if random.randint(0,2) == 0:
-    for i in range(13):
-        if i < 4:
-            stim_dict[indices[i]] = "LC"
-        if i >= 4 and i < 7:
-            stim_dict[indices[i]] = "PS"
-        if i >= 7 and i < 9:
-            stim_dict[indices[i]] = "LFO"
-        if i>=9 and i < 11:
-            stim_dict[indices[i]] = "SAW"
-        if i >= 11:
-            stim_dict[indices[i]] = "ROS"
-
-else:
-    for i in range(13):
-        if i < 3:
-            stim_dict[indices[i]] = "LFO"
-        if i >= 3 and i < 5:
-            stim_dict[indices[i]] = "SAW"
-        if i >= 5 and i < 7:
-            stim_dict[indices[i]] = "ROS"
-        if i>= 7 and i < 10:
-            stim_dict[indices[i]] = "LC"
-        if i >= 10:
-            stim_dict[indices[i]] = "PS"
-
-#print stim_dict
 
 
 ###
 ### Now present the stimuli
 ###
 
-for trial in range(13):
-    choice = False
-    zscore = order[trial]
-    #print zscore
+for run in range(num_runs):
 
-    method = stim_dict[trial]
-    if method == "LFO" or method == "SAW" or method == "ROS":
-        stim_type = "sounds"
-    else: stim_type = "images"
+    order_data_path = os.path.join(subject_dir, 'NA_presentation_order_data_run'
+                                                + str(run) + '.json')
+    order_data = open(order_data_path, 'w')
+    stim_dict = {}
 
-    # get some random file of specified type
-    method_dir = os.path.join(stimulus_dir, stim_type, str(zscore), method)
-    file = os.path.join(method_dir,random.choice(os.listdir(method_dir)))
+    stim_response_path = os.path.join(subject_dir, 'NA_stim_response_data_run'
+                                                   + str(run)+ '.json')
+    stim_response = open(stim_response_path, 'w')
+    response_dict = {}
 
-    #update the dictionary with the specific file
-    stim_dict[trial] = file
+    # getting some random order of bins
+    image_zscore = random.sample(range(13), 13)
+    sound_zscore = random.sample(range(13), 13)
 
-    if stim_type == "sounds":
-        soundClip = sound.Sound(file, secs = 2)
+    # getting random order of stimuli
+    indices = random.sample(range(26),26)
+    image_types = ["LC", "PS"]
+    sound_types = ["LFO", "SAW", "ROS"]
 
-    if stim_type == "images":
-        blob = visual.ImageStim(mywin, image=file, pos=(0,.25))
+    # pick the generator method for stimuli
+    for index in range(26):
+        if (index < 12):
+            stim_dict[indices[index]] = (image_types[index%2],
+                                         image_zscore[index])
+        if (index == 12):
+            stim_dict[indices[index]] = (image_types[random.randint(0,1)],
+                                         image_zscore[index])
+        if (index > 12) and (index < 25):
+            stim_dict[indices[index]] = (sound_types[index%3],
+                                         sound_zscore[index%13])
+        if (index == 25):
+            stim_dict[indices[index]] = (sound_types[random.randint(0,2)],
+                                         sound_zscore[index%13])
 
-    #draw the stimuli and update the window
-    while (choice == False): #this creates a never-ending loop
-        if stim_type == "images":
-            blob.draw()
+    # run through trials (one image/sound)
+    for trial in range(26):
+        choice = False
+
+        # get info about stimuli for this trial
+        method = stim_dict[trial][0]
+        zscore = stim_dict[trial][1]
+        if method == "LFO" or method == "SAW" or method == "ROS":
+            stim_type = "sounds"
+        else: stim_type = "images"
+
+        # get some random file of specified type
+        method_dir = os.path.join(stimulus_dir, stim_type, str(zscore), method)
+        file = os.path.join(method_dir,random.choice(os.listdir(method_dir)))
+
+        #update the dictionary with the specific file
+        stim_dict[trial] = file
 
         if stim_type == "sounds":
-            play_button = visual.ShapeStim(mywin, units = 'pix',
-                                           vertices = button_vertices,
-                                           lineColor=(0,0,0),
-                                           lineColorSpace = 'rgb255',
-                                           pos = (0,0),
-                                           fillColor = (255,255,255),
-                                           fillColorSpace = 'rgb255')
-            play_button_text.draw()
-            play_button.draw()
+            soundClip = sound.Sound(file, secs = 2)
 
-            noSound_button.setFillColor(color = (255,255,255),
-                                        colorSpace='rgb255')
-            noSound_button.draw()
-            noSound_button_text.draw()
+        if stim_type == "images":
+            blob = visual.ImageStim(mywin, image=file, pos=(0,.25))
 
-        sad_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
-        sad_button.draw()
-        sad_button_text.draw()
-
-        angry_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
-        angry_button.draw()
-        angry_button_text.draw()
-
-        mywin.flip()
-
-        if mouse.isPressedIn(sad_button, buttons=[0]):
-            sad_button.setFillColor(color = (225,225,225),
-                                         colorSpace='rgb255')
+        #draw the stimuli and wait for choice
+        while (choice == False):
             if stim_type == "images":
                 blob.draw()
+
             if stim_type == "sounds":
+                play_button = visual.ShapeStim(mywin, units = 'pix',
+                                               vertices = button_vertices,
+                                               lineColor=(0,0,0),
+                                               lineColorSpace = 'rgb255',
+                                               pos = (0,0),
+                                               fillColor = (255,255,255),
+                                               fillColorSpace = 'rgb255')
+                play_button_text.draw()
+                play_button.draw()
+
+                noSound_button.setFillColor(color = (255,255,255),
+                                            colorSpace='rgb255')
+                noSound_button.draw()
+                noSound_button_text.draw()
+
+            sad_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
+            sad_button.draw()
+            sad_button_text.draw()
+
+            angry_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
+            angry_button.draw()
+            angry_button_text.draw()
+
+            mywin.flip()
+
+            if mouse.isPressedIn(sad_button, buttons=[0]):
+                sad_button.setFillColor(color = (225,225,225),
+                                             colorSpace='rgb255')
+                if stim_type == "images":
+                    blob.draw()
+                if stim_type == "sounds":
+                    soundClip.stop()
+
+                sad_button.draw()
+                sad_button_text.draw()
+
+                angry_button.draw()
+                angry_button_text.draw()
+
+                mywin.flip()
+
+                mouse.clickReset()
+                core.wait(.2)
+
+                response_dict[file] = "Sad"
+                choice = True
+
+            if mouse.isPressedIn(angry_button, buttons=[0]):
+                angry_button.setFillColor(color = (225,225,225),
+                                            colorSpace='rgb255')
+                if stim_type == "images":
+                    blob.draw()
+                if stim_type == "sounds":
+                    soundClip.stop()
+
+                angry_button.draw()
+                angry_button_text.draw()
+
+                sad_button.draw()
+                sad_button_text.draw()
+
+                mywin.flip()
+
+                mouse.clickReset()
+                core.wait(.2)
+
+                response_dict[file] = "Angry"
+                choice = True
+
+            if mouse.isPressedIn(play_button, buttons=[0]):
+                play_button = visual.ShapeStim(mywin, units = 'pix',
+                                               vertices = button_vertices,
+                                               lineColor=(0,0,0),
+                                               lineColorSpace = 'rgb255',
+                                               pos = (0,0),
+                                               fillColor = (225,225,225),
+                                               fillColorSpace = 'rgb255')
+                play_button.draw()
+                play_button_text.draw()
+
+                noSound_button.draw()
+                noSound_button_text.draw()
+
+                angry_button.draw()
+                angry_button_text.draw()
+
+                sad_button.draw()
+                sad_button_text.draw()
+
+                mywin.flip()
+
+                mouse.clickReset()
+                core.wait(0.2)
+                soundClip.play()
+
+            if mouse.isPressedIn(noSound_button, buttons = [0]):
                 soundClip.stop()
+                play_button.draw()
+                play_button_text.draw()
 
-            sad_button.draw()
-            sad_button_text.draw()
+                sad_button.draw()
+                sad_button_text.draw()
 
-            angry_button.draw()
-            angry_button_text.draw()
+                angry_button.draw()
+                angry_button_text.draw()
 
-            mywin.flip()
+                noSound_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
+                noSound_button.draw()
+                noSound_button_text.draw()
 
-            mouse.clickReset()
-            core.wait(.2)
+                mywin.flip()
 
-            response_dict[file] = "Sad"
-            choice = True
+                mouse.clickReset()
+                core.wait(0.2)
 
-        if mouse.isPressedIn(angry_button, buttons=[0]):
-            angry_button.setFillColor(color = (225,225,225),
-                                        colorSpace='rgb255')
-            if stim_type == "images":
-                blob.draw()
-            if stim_type == "sounds":
-                soundClip.stop()
-
-            angry_button.draw()
-            angry_button_text.draw()
-
-            sad_button.draw()
-            sad_button_text.draw()
-
-            mywin.flip()
-
-            mouse.clickReset()
-            core.wait(.2)
-
-            response_dict[file] = "Angry"
-            choice = True
-
-        if mouse.isPressedIn(play_button, buttons=[0]):
-            play_button = visual.ShapeStim(mywin, units = 'pix',
-                                           vertices = button_vertices,
-                                           lineColor=(0,0,0),
-                                           lineColorSpace = 'rgb255',
-                                           pos = (0,0),
-                                           fillColor = (225,225,225),
-                                           fillColorSpace = 'rgb255')
-            play_button.draw()
-            play_button_text.draw()
-
-            noSound_button.draw()
-            noSound_button_text.draw()
-
-            angry_button.draw()
-            angry_button_text.draw()
-
-            sad_button.draw()
-            sad_button_text.draw()
-
-            mywin.flip()
-
-            mouse.clickReset()
-            core.wait(0.2)
-            soundClip.play()
+                response_dict[file] = "NONE"
+                choice = True
 
 
-        if mouse.isPressedIn(noSound_button, buttons = [0]):
-            soundClip.stop()
-            play_button.draw()
-            play_button_text.draw()
+    ###
+    ### write data to files
+    ###
+    json.dump(stim_dict, order_data, sort_keys=True, indent=4)
+    json.dump(response_dict, stim_response, sort_keys=True, indent=4)
 
-            sad_button.draw()
-            sad_button_text.draw()
-
-            angry_button.draw()
-            angry_button_text.draw()
-
-            noSound_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
-            noSound_button.draw()
-            noSound_button_text.draw()
-
-            mywin.flip()
-
-            mouse.clickReset()
-            core.wait(0.2)
-
-            response_dict[file] = "NONE"
-            choice = True
-
-
-###
-### write data to files
-###
-json.dump(stim_dict, order_data, sort_keys=True, indent=4)
-json.dump(response_dict, stim_response, sort_keys=True, indent=4)
+    # close files
+    order_data.close()
+    stim_response.close()
 
 
 #cleanup
 mywin.close()
-order_data.close()
-stim_response.close()
 core.quit()
