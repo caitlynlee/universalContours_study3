@@ -56,6 +56,13 @@ ratingScale = visual.RatingScale(mywin, low=1, high=200, marker = mark,
                                  showValue = False, lineColor = 'LightGray',
                                  stretch = 2.5, markerExpansion = 0.5,
                                  textColor = 'Black', showAccept = False)
+next_button_text = visual.TextStim(mywin,text="Next",
+                                   color=(0,0,0), colorSpace='rgb255',
+                                   pos=(0,-280), height=20, units = 'pix')
+next_button = visual.Rect(mywin, width=150, height=50, units='pix',
+                             lineColor=(0,0,0), lineColorSpace='rgb255',
+                             pos=(0,-280), fillColor = (255,255,255),
+                             fillColorSpace = 'rgb255')
 
 # the play button for sounds
 play_button_text = visual.TextStim(mywin,text="Click play button to play sound",
@@ -155,9 +162,12 @@ for trial in range(13):
     # adding files presented to dictionary
     stim_dict[trial] = (image_file, sound_file)
 
+    # reset things:
+    noSound = False
+    rating = False
+
     # draw and wait for response
-    while ratingScale.noResponse:
-        noSound = False
+    while rating == False:
         blob.draw()
 
         play_button = visual.ShapeStim(mywin, units = 'pix',
@@ -176,6 +186,9 @@ for trial in range(13):
         noSound_button_text.draw()
 
         ratingScale.draw()
+        next_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
+        next_button.draw()
+        next_button_text.draw()
 
         mywin.flip()
 
@@ -194,6 +207,9 @@ for trial in range(13):
             noSound_button.draw()
             noSound_button_text.draw()
 
+            next_button.draw()
+            next_button_text.draw()
+
             ratingScale.draw()
 
             mywin.flip()
@@ -202,9 +218,8 @@ for trial in range(13):
             core.wait(0.2)
             soundClip.play()
 
-
         if mouse.isPressedIn(noSound_button, buttons = [0]):
-            soundClip.stop()
+            blob.draw()
             play_button.draw()
             play_button_text.draw()
 
@@ -212,13 +227,41 @@ for trial in range(13):
             noSound_button.draw()
             noSound_button_text.draw()
 
+            ratingScale.draw()
+
+            next_button.draw()
+            next_button_text.draw()
+
             mywin.flip()
 
             mouse.clickReset()
             core.wait(0.2)
 
             noSound = True
-            break
+            rating = True
+
+        if mouse.isPressedIn(next_button, buttons = [0]):
+            next_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
+            next_button.draw()
+            next_button_text.draw()
+
+            blob.draw()
+            play_button.draw()
+            play_button_text.draw()
+
+            noSound_button.draw()
+            noSound_button_text.draw()
+
+            ratingScale.draw()
+
+            mywin.flip()
+
+            mouse.clickReset()
+            core.wait(0.2)
+
+            if ratingScale.getRating():
+                rating = True
+                final_rating = ratingScale.getRating()/2
 
     #if sound is still playing, stop
     soundClip.stop()
@@ -227,10 +270,12 @@ for trial in range(13):
     if noSound:
         response_dict[trial] = "NONE"
     else:
-        response_dict[trial] = ratingScale.getRating()/2
+        response_dict[trial] = final_rating
         ratingScale.reset()
 
+    # clean the window
     mywin.flip()
+
 
 ###
 ### write data to files
