@@ -72,10 +72,10 @@ play_button = visual.ShapeStim(mywin, units = 'pix', vertices = button_vertices,
 # another sound related button - for testing mostly
 noSound_button_text = visual.TextStim(mywin,text="Could not hear sound",
                                    color=(0,0,0), colorSpace='rgb255',
-                                   pos=(0,-300), height=20, units = 'pix')
-noSound_button = visual.Rect(mywin, width=200, height=30, units='pix',
+                                   pos=(0,-100), height=12, units = 'pix')
+noSound_button = visual.Rect(mywin, width=150, height=30, units='pix',
                              lineColor=(0,0,0), lineColorSpace='rgb255',
-                             pos=(0,-300), fillColor = (255,255,255),
+                             pos=(0,-100), fillColor = (255,255,255),
                              fillColorSpace = 'rgb255')
 
 # Set the stimulus directory

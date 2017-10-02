@@ -48,20 +48,24 @@ mywin = visual.Window([1000,750], color=(255,255,255), monitor="testMonitor")
 mouse = event.Mouse(visible=True)
 buttons = mouse.getPressed()
 
-#the 'peaceful' or 'excited' buttons
-peaceful_button = visual.Rect(mywin, width=150, height=50, units='pix',
+#the 'a' or 'b' buttons
+positive = ["Peaceful", "Excited"]
+negative = ["Sad", "Angry"]
+
+placement = random.randint(0,1)
+a_button = visual.Rect(mywin, width=150, height=50, units='pix',
                               lineColor=(0,0,0), lineColorSpace='rgb255',
                               pos=(-250,-220), fillColor = (255,255,255),
                               fillColorSpace = 'rgb255')
-peaceful_button_text = visual.TextStim(mywin, text="Peaceful", color=(0,0,0),
+a_button_text = visual.TextStim(mywin, text=positive[placement], color=(0,0,0),
                                        colorSpace='rgb255', pos=(-0.5,-0.586),
                                        height=0.075)
 
-excited_button = visual.Rect(mywin, width=150, height=50, units='pix',
+b_button = visual.Rect(mywin, width=150, height=50, units='pix',
                              lineColor=(0,0,0), lineColorSpace='rgb255',
                              pos=(250,-220), fillColor = (255,255,255),
                              fillColorSpace = 'rgb255')
-excited_button_text = visual.TextStim(mywin, text="Excited", color=(0,0,0),
+b_button_text = visual.TextStim(mywin, text=positive[abs(placement-1)], color=(0,0,0),
                                       colorSpace='rgb255', pos=(0.5,-0.586),
                                       height=0.075)
 
@@ -176,56 +180,56 @@ for trial in range(13):
             noSound_button_text.draw()
 
 
-        peaceful_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
-        peaceful_button.draw()
-        peaceful_button_text.draw()
+        a_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
+        a_button.draw()
+        a_button_text.draw()
 
-        excited_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
-        excited_button.draw()
-        excited_button_text.draw()
+        b_button.setFillColor(color = (255,255,255), colorSpace='rgb255')
+        b_button.draw()
+        b_button_text.draw()
 
         mywin.flip()
 
-        if mouse.isPressedIn(peaceful_button, buttons=[0]):
-            peaceful_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
+        if mouse.isPressedIn(a_button, buttons=[0]):
+            a_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
             if stim_type == "images":
                 blob.draw()
             if stim_type == "sounds":
                 soundClip.stop()
 
-            peaceful_button.draw()
-            peaceful_button_text.draw()
+            a_button.draw()
+            a_button_text.draw()
 
-            excited_button.draw()
-            excited_button_text.draw()
+            b_button.draw()
+            b_button_text.draw()
 
             mywin.flip()
 
             mouse.clickReset()
             core.wait(.2)
 
-            response_dict[file] = "Peaceful"
+            response_dict[file] = positive[placement]
             choice = True
 
-        if mouse.isPressedIn(excited_button, buttons=[0]):
-            excited_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
+        if mouse.isPressedIn(b_button, buttons=[0]):
+            b_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
             if stim_type == "images":
                 blob.draw()
             if stim_type == "sounds":
                 soundClip.stop()
 
-            excited_button.draw()
-            excited_button_text.draw()
+            b_button.draw()
+            b_button_text.draw()
 
-            peaceful_button.draw()
-            peaceful_button_text.draw()
+            a_button.draw()
+            a_button_text.draw()
 
             mywin.flip()
 
             mouse.clickReset()
             core.wait(.2)
 
-            response_dict[file] = "Excited"
+            response_dict[file] = positive[abs(placement-1)]
             choice = True
 
         if mouse.isPressedIn(play_button, buttons=[0]):
@@ -239,11 +243,11 @@ for trial in range(13):
             play_button.draw()
             play_button_text.draw()
 
-            excited_button.draw()
-            excited_button_text.draw()
+            b_button.draw()
+            b_button_text.draw()
 
-            peaceful_button.draw()
-            peaceful_button_text.draw()
+            a_button.draw()
+            a_button_text.draw()
 
             noSound_button.draw()
             noSound_button_text.draw()
@@ -259,11 +263,11 @@ for trial in range(13):
             play_button.draw()
             play_button_text.draw()
 
-            excited_button.draw()
-            excited_button_text.draw()
+            b_button.draw()
+            b_button_text.draw()
 
-            peaceful_button.draw()
-            peaceful_button_text.draw()
+            a_button.draw()
+            a_button_text.draw()
 
             noSound_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
             noSound_button.draw()
