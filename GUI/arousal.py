@@ -8,8 +8,8 @@ import json
 ###
 ### Experiment data
 ###
-output_dir = os.path.join(os.path.expanduser("~"),"Documents", "Dartmouth", "wheatlab",
-                          "universal_contours", "output")
+cwd = os.getcwd()
+output_dir = os.path.join(cwd, "output")
 sub_id = raw_input("Enter subject_id: ")
 subject_dir = os.path.join(output_dir,str(sub_id))
 
@@ -28,7 +28,7 @@ if not os.path.exists(subject_dir):
         json.dump(sub_dict, f, sort_keys=True, indent=4)
 
 # get number of runs:
-num_runs = input("Number of runs: ")
+num_runs = 20
 
 
 ###
