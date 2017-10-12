@@ -13,6 +13,7 @@ output_dir = os.path.join(cwd, "output")
 sub_id = raw_input("Enter subject_id: ")
 subject_dir = os.path.join(output_dir,str(sub_id))
 
+# setting up subject info for the first time
 if not os.path.exists(subject_dir):
     sub_dict = {}
     os.mkdir(subject_dir)
