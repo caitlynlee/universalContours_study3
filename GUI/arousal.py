@@ -29,8 +29,19 @@ if not os.path.exists(subject_dir):
         json.dump(sub_dict, f, sort_keys=True, indent=4)
 
 # get number of runs:
-num_runs = 20
+num_runs = 4
 
+# get the order of affective stimuli
+affect_indices = set(random.sample(range(num_runs), num_runs/2))
+affect_dict = {}
+affect_choices = ["positive", "negative"]
+for num in range(num_runs):
+    if num in affect_indices:
+        affect_dict[num] = affect_choices[0]
+    else: affect_dict[num] = affect_choices[1]
+affect_dict_path = os.path.join(subject_dir, 'affect_presentation.json')
+with open(affect_dict_path, 'w') as f:
+    json.dump(affect_dict, f, sort_keys=True, indent=4)
 
 ###
 ### Do all the setting up
@@ -44,19 +55,11 @@ mouse = event.Mouse(visible=True)
 buttons = mouse.getPressed()
 
 #the 'a' or 'b' buttons
-affect_choices = ["positive", "negative"]
-affect = affect_choices[0]
-if affect == "negative":
-    text = ["Sad", "Angry"]
-elif affect == "positive":
-    text = ["Excited", "Peaceful"]
-placement = random.randint(0,1)
-
 a_button = visual.Rect(mywin, width=150, height=50, units='pix',
                               lineColor=(0,0,0), lineColorSpace='rgb255',
                               pos=(-250,-220), fillColor = (255,255,255),
                               fillColorSpace = 'rgb255')
-a_button_text = visual.TextStim(mywin, text=text[placement], color=(0,0,0),
+a_button_text = visual.TextStim(mywin, text=None, color=(0,0,0),
                                        colorSpace='rgb255', pos=(-0.5,-0.586),
                                        height=0.075)
 
@@ -64,7 +67,7 @@ b_button = visual.Rect(mywin, width=150, height=50, units='pix',
                              lineColor=(0,0,0), lineColorSpace='rgb255',
                              pos=(250,-220), fillColor = (255,255,255),
                              fillColorSpace = 'rgb255')
-b_button_text = visual.TextStim(mywin, text=text[abs(placement-1)], color=(0,0,0),
+b_button_text = visual.TextStim(mywin, text=None, color=(0,0,0),
                                       colorSpace='rgb255', pos=(0.5,-0.586),
                                       height=0.075)
 
@@ -135,12 +138,22 @@ while not ready:
 
 for run in range(num_runs):
 
-    order_data_path = os.path.join(subject_dir, affect + '_presentation_order_data_run'
+    affect = affect_dict[run]
+    if affect == "negative":
+        text = ["Sad", "Angry"]
+    elif affect == "positive":
+        text = ["Excited", "Peaceful"]
+    placement = random.randint(0,1)
+
+    a_button_text.setText(text=text[placement])
+    b_button_text.setText(text=text[abs(placement-1)])
+
+    order_data_path = os.path.join(subject_dir, 'presentation_order_data_run'
                                                 + str(run) + '.json')
     order_data = open(order_data_path, 'w')
     stim_dict = {}
 
-    stim_response_path = os.path.join(subject_dir, affect + '_stim_response_data_run'
+    stim_response_path = os.path.join(subject_dir, 'stim_response_data_run'
                                                    + str(run)+ '.json')
     stim_response = open(stim_response_path, 'w')
     response_dict = {}
