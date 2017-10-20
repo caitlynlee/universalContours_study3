@@ -78,8 +78,7 @@ def run(subjectID, subjectAge, subjectGender, date):
                                  fillColorSpace = 'rgb255')
 
     # Set the stimulus directory
-    stimulus_dir = os.path.join(os.path.expanduser("~"),"Documents", "Dartmouth",
-                                "wheatlab","universal_contours", "STIMULI")
+    stimulus_dir = os.path.join(os.path.dirname(cwd),'STIMULI')
 
     # Pick the order of the images and the sounds
     image_zscore_order = random.sample(range(13),13)
