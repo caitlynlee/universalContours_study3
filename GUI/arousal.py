@@ -29,7 +29,7 @@ if not os.path.exists(subject_dir):
         json.dump(sub_dict, f, sort_keys=True, indent=4)
 
 # get number of runs:
-num_runs = 4
+num_runs = 2
 
 # get the order of affective stimuli
 affect_indices = set(random.sample(range(num_runs), num_runs/2))
@@ -91,8 +91,7 @@ noSound_button = visual.Rect(mywin, width=150, height=30, units='pix',
                              fillColorSpace = 'rgb255')
 
 # Set the stimulus directory
-stimulus_dir = os.path.join(os.path.expanduser("~"),"Documents", "Dartmouth",
-                            "wheatlab","universal_contours", "STIMULI")
+stimulus_dir = os.path.join(os.path.dirname(cwd),'STIMULI')
 
 ###
 ### Show instruction screen
@@ -195,16 +194,17 @@ for run in range(num_runs):
 
         # get some random file of specified type
         method_dir = os.path.join(stimulus_dir, stim_type, str(zscore), method)
-        file = os.path.join(method_dir,random.choice(os.listdir(method_dir)))
+        stim_file = random.choice(os.listdir(method_dir))
+        filename = os.path.join(method_dir,stim_file)
 
         #update the dictionary with the specific file
-        stim_dict[trial] = file
+        stim_dict[trial] = str(zscore) + "/" + stim_file
 
         if stim_type == "sounds":
-            soundClip = sound.Sound(file, secs = 2)
+            soundClip = sound.Sound(filename, secs = 2)
 
         if stim_type == "images":
-            blob = visual.ImageStim(mywin, image=file, pos=(0,.25))
+            blob = visual.ImageStim(mywin, image=filename, pos=(0,.25))
 
         #draw the stimuli and wait for choice
         while (choice == False):
@@ -256,7 +256,7 @@ for run in range(num_runs):
                 mouse.clickReset()
                 core.wait(.2)
 
-                response_dict[file] = text[placement]
+                response_dict[str(zscore) + "/" + stim_file] = text[placement]
                 choice = True
 
             if mouse.isPressedIn(b_button, buttons=[0]):
@@ -278,7 +278,7 @@ for run in range(num_runs):
                 mouse.clickReset()
                 core.wait(.2)
 
-                response_dict[file] = text[abs(placement-1)]
+                response_dict[str(zscore) + "/" + stim_file] = text[abs(placement-1)]
                 choice = True
 
             if mouse.isPressedIn(play_button, buttons=[0]):
@@ -327,7 +327,7 @@ for run in range(num_runs):
                 mouse.clickReset()
                 core.wait(0.2)
 
-                response_dict[file] = "NONE"
+                response_dict[str(zscore) + "/" + stim_file] = "NONE"
                 choice = True
 
 
