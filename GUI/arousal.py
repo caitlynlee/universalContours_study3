@@ -28,7 +28,7 @@ def run(subjectID, subjectAffect, subjectAge, subjectGender, date):
             json.dump(sub_dict, f, sort_keys=True, indent=4)
 
     # get number of runs:
-    num_runs = 4
+    num_runs = 20
 
     # get the order of affective stimuli
     affect = subjectAffect

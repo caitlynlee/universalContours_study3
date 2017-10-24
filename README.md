@@ -21,3 +21,4 @@ Methods used to generate the sounds: LFO, SAW table, and ROS. LFO also uses sine
 3 different conditions - negative arousal, positive arousal, and matching. All created using `psychopy` library. Conditions are assigned randomly vi `getSubjectIDs`. Generates IDs in range 0-n for $n$ participants, and then assigned randomly to one of three conditions. Conditions for each subjectID can be found in `conditionMapping.json`.
 
 All conditions are run from `run.py` in *GUI* directory. ID and subject demographics must be entered into the code manually before beginning task. `run.py` will then run the appropriate arousal or matching task, based on the condition mapping (so as to be blind to experimenter).
+  

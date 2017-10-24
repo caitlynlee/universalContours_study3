@@ -13,10 +13,10 @@ with open(mappingFilename) as mappingFile:
 ############# ENTER SUBJECT INFO HERE ############
 ##################################################
 
-subjectID = 10
-subjectAge = 20
-subjectGender = "F"
-date = "19102017"
+subjectID = 0
+subjectAge = 10000
+subjectGender = "deletethisone"
+date = "TEST"
 
 ##################################################
 ##################################################
