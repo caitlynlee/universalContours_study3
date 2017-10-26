@@ -295,6 +295,14 @@ def run(subjectID, subjectAge, subjectGender, date):
         json.dump(response_dict, stim_response, sort_keys=True, indent=4)
 
 
+    finish_text = "End"
+    finish = visual.TextStim(mywin, text=finish_text, color=(0,0,0),
+                                           colorSpace='rgb255', pos=(0,0),
+                                           height=0.075)
+    finish.draw()
+    mywin.flip()
+    core.wait(5)
+
     #cleanup
     mywin.close()
     order_data.close()
