@@ -5,7 +5,7 @@ import arousal
 import matching
 
 cwd = os.getcwd()
-mappingFilename = os.path.join(os.path.dirname(cwd), 'conditionMapping.json')
+mappingFilename = os.path.join(cwd, 'conditionMapping.json')
 with open(mappingFilename) as mappingFile:
     conditionMapping = json.load(mappingFile)
 
