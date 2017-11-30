@@ -9,7 +9,7 @@ cwd = os.getcwd()
 image_dir = os.path.join(cwd, "unsorted")
 numImages = 15
 
-for i in range(14):
+for i in range(13):
 	if not os.path.isDir(os.path.join(os.path.dirname(cwd), "images", str(i))):
 		os.mkdir(os.path.join(os.path.dirname(cwd), "images", str(i)))
 
@@ -32,7 +32,7 @@ for filename in os.listdir(image_dir):
 			os.remove(image_path)
 
 
-for corners in range(14):
+for corners in range(13):
     cornerdir = os.path.join(os.path.dirname(cwd), "images", str(corners))
 
     linecount = 0
@@ -70,7 +70,7 @@ for corners in range(14):
             os.remove(os.path.join(cornerdir,file))
 
 
-for zscore in range(14):
+for zscore in range(13):
     zscore_dir = os.path.join(type_dir, str(zscore))
 
     LC_dir = (os.path.join(type_dir, str(zscore), "LC"))
