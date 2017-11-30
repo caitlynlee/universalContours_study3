@@ -1,11 +1,13 @@
 # Distorted circle method.
-# Must randomly change the number of vertices
 
 import math
 import itertools
 import os
 
 cwd = os.getcwd()
+
+if not os.path.isdir(os.path.join(cwd, "unsorted")):
+    os.mkdir(os.path.join(cwd, "unsorted"))
 
 def pickRandomCombo(totalPoints, numCurvePoints):
     combo = list(itertools.combinations(range(totalPoints), numCurvePoints))
@@ -75,24 +77,21 @@ def drawAmeoba(radius, centerX, centerY, numPoints, numCurvePoints):
 
 
 size(500, 500, P2D)
-numPoints = 12
 
-for numCurves in range(0,10):
-    numImages = 0
-    while (numImages < 10):
-        strokeWeight(2)
-        background(255)
-        curveTightness(0)
-        #s = createShape()
-        beginShape()
+numImages = 0
+for numPoints in range(3,15):
+  for numCurves in range(10):
+      for count in range(10):
+          strokeWeight(2)
+          background(255)
+          curveTightness(0)
+          s = createShape()
+          beginShape()
 
-        drawAmeoba(100,250,250,numPoints,numCurves)
-        endShape()
+          drawAmeoba(100,250,250,numPoints,numCurves)
+          endShape()
 
-        filename = os.path.join(os.path.dirname(cwd),
-        "STIMULI",
-        "images",
-        "PS_" + str(numImages))
+          filename = os.path.join(cwd, "unsorted", "PS_" + str(numImages))
 
-        save(filename)
-        numImages += 1
+          save(filename)
+          numImages += 1

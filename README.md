@@ -25,12 +25,14 @@ Code for generating images can be found in *generating_sounds* subdirectory
 
 3 different conditions - negative arousal, positive arousal, and matching. All created using `psychopy` library. Conditions are assigned randomly; conditions for each subjectID can be found in `conditionMapping.json`.
 
-All conditions are run from `run.py` in *GUI* directory. ID and subject demographics must be entered into the code manually before beginning task. `run.py` will then run the appropriate arousal or matching task, referenced from mapping JSON.
+To generate new subjectIDs assigned randomly to conditions and a new conditionMapping JSON, call `getSubjectIDs.py`.
 
-Output will be in the form of JSON files of presentation order data and response data placed in directory according to subject ID. Subject data directories are placed in *output* directory from within *GUI* directory.
+**To run**: call `run.py`. Subject ID and subject demographics must be entered into the code in `run.py` manually before beginning task. `run.py` will then run the appropriate arousal or matching task, referenced from mapping JSON.
+
+Output will be in the form of a directory for the subjectID containing JSON files of presentation order data and response data. Subject data directories are placed in *output* directory from within *GUI* directory. If not already exists, must manually create directory.
 
 ### DATA
 
-`getData.py` converts all relevant subject data into CSVs according to condition.
+Converts all relevant subject data (from *GUI/output/* directory) into CSV for each condition.
 
-Needs stimuli parameter JSON files to build CSVs.
+**To run**: call `getData.py`. Directory must contain stimuli parameter JSONs to build CSVs. Relevant parameter JSONs are created using `getParameters.py` from within the *STIMULI* directory.

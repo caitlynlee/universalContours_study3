@@ -1,8 +1,11 @@
+# Adding/creating new subject IDS. specify number desired using numSubjects.
+
 import random
 import os
 import json
 
-IDS = random.sample(range(60),60)
+numSubjects = 60
+IDS = random.sample(range(numSubjects),numSubjects)
 idConditions = {}
 
 for num in range(20):

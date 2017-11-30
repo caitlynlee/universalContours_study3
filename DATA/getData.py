@@ -11,7 +11,6 @@ with open(mappingFilename) as mappingFile:
 
 soundsParamFile = os.path.join(cwd, 'soundParameters.json')
 imageParamFile = os.path.join(cwd, 'imageParameters.json')
-soundSCFile = os.path.join(cwd, 'soundSC.json')
 
 with open(soundsParamFile) as f:
     soundParams = json.load(f)
@@ -19,12 +18,26 @@ with open(soundsParamFile) as f:
 with open(imageParamFile) as f:
     imageParams = json.load(f)
 
-with open(soundSCFile) as f:
-    soundSC = json.load(f)
+with open('positive.csv', 'a') as positiveCSV:
+    writer = csv.writer(positiveCSV, delimiter=',')
+    writer.writerow(["subID", "stimFile", "stimType", "bin", "corners", "SC",
+                     "response", "boundingBoxArea", "areaRatio",
+                     "duration", "numOnsets", "onsetStrength"])
 
+with open('negative.csv', 'a') as positiveCSV:
+    writer = csv.writer(positiveCSV, delimiter=',')
+    writer.writerow(["subID", "stimFile", "stimType", "bin", "corners", "SC",
+                     "response", "boundingBoxArea", "areaRatio",
+                     "duration", "numOnsets", "onsetStrength"])
+
+with open('matching.csv', 'a') as positiveCSV:
+    writer = csv.writer(positiveCSV, delimiter=',')
+    writer.writerow(["subID", "imageFile", "soundFile", "imageBin", "corners",
+                     "soundBin", "SC", "response", "boundingBoxArea", "areaRatio",
+                     "duration", "numOnsets", "onsetStrength"])
 
 # go through all the participants
-for i in range(60):
+for i in range(len(conditionMapping)):
 
     # Positive condition
     if conditionMapping[str(i)] == "positive":
@@ -61,12 +74,13 @@ for i in range(60):
 
                     else:
                         stimType = "sound"
+                        sc = soundParams[corner][stimName][0]
                         dur = soundParams[corner][stimName][1]
                         numOnsets = soundParams[corner][stimName][2]
                         onsetStrength = soundParams[corner][stimName][3]
                         writer.writerow([i, stimName, stimType,
                                          int(corner),
-                                         "NA", soundSC[corner][stimName],
+                                         "NA", sc,
                                          choice,
                                          "NA", "NA",
                                          dur, numOnsets, onsetStrength])
@@ -109,12 +123,13 @@ for i in range(60):
 
                     else:
                         stimType = "sound"
+                        sc = soundParams[corner][stimName][0]
                         dur = soundParams[corner][stimName][1]
                         numOnsets = soundParams[corner][stimName][2]
                         onsetStrength = soundParams[corner][stimName][3]
                         writer.writerow([i, stimName, stimType,
                                          int(corner),
-                                         "NA", soundSC[corner][stimName],
+                                         "NA", sc,
                                          choice,
                                          "NA", "NA",
                                          dur, numOnsets, onsetStrength])
@@ -154,13 +169,14 @@ for i in range(60):
                     bbArea = imageParams[imageData[-3]][imageData[-1]][1]
                     ratio = imageParams[imageData[-3]][imageData[-1]][2]
 
+                    sc = soundParams[soundData[-3]][soundData[-1]][0]
                     dur = soundParams[soundData[-3]][soundData[-1]][1]
                     numOnsets = soundParams[soundData[-3]][soundData[-1]][2]
                     onsetStrength = soundParams[soundData[-3]][soundData[-1]][3]
 
                     writer.writerow([i, imageData[-1], soundData[-1],
                                         int(imageData[-3]), int(imageData[-3]) + 1,
-                                        int(soundData[-3]), soundSC[soundData[-3]][soundData[-1]],
+                                        int(soundData[-3]), sc,
                                         choice,
                                         bbArea, ratio,
                                         dur, numOnsets, onsetStrength])
