@@ -1,13 +1,8 @@
+# Turning participant data JSONs into one large CSV file
+
 import os
 import csv
 import json
-
-# format of CSV files
-# arousal: subID, filename, stimtype, corner/sc, judgement
-# matching: subID, imagefilename, soundFilename, imcorner, soundSC, rating
-
-# arousal: everything can be from response_data
-# matching: need presentation order/stim response
 
 cwd = os.getcwd()
 mappingFilename = os.path.join(os.path.dirname(cwd), 'conditionMapping.json')
