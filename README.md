@@ -1,25 +1,27 @@
 # Universal Contours
-Generating and presenting stimuli for universal contours study. Code is for generating and presenting stimuli.
+Generating and presenting stimuli for universal contours study.
 
 ### STIMULI
-Directory containing relevant subdirectories with 390 shapes and 390 sounds. Also containing jupyter notebooks for looking at the variance in the relevant paramters of shapes and sounds.
+Directory contains relevant subdirectories with the 390 shapes and 390 sounds that were used for the study. *STIMULI* directory also containing jupyter notebooks for looking at the variance in the relevant parameters of shapes and sounds, as well as code for generating new shapes or sounds.
+
+Once stimuli are generated, `getParameters.py` is used to generate stimuli parameter JSONs for further analysis. Stimuli parameter JSONs are placed in *DATA* directory.
+
+#### images and sounds
+
+All stimuli used for the study are found in their respective directories. Directories are sorted according to zscored number of corners or spectral centroid. Within each numbered subdirectory, there are directories for each generating method and stimuli generated using that method contained within.
+
+#### generating_images  
+
+The two algorithms for generating shapes are contained within `line_curve.pyde` and `pseudoAmeoba.pyde`. To run either, open in *Processing* and click run. This will output all shapes generated into a subdirectory named *unsorted*.
+
+To pick some random subset of images to be used and sort according to corner count, call `pickImages.py`
 
 
-#### Images
+#### generating_sounds
 
-Images were created using Processing. Two methods were used to create images. Number of corners range from 1-13.
+The three methods used to create and save the sounds can all be found in the `Making and Saving sounds` notebook. As noted in the Jupyter notebook, cells from within the notebook must be run individually in order to generate the desired number of sounds. This will output all sounds into a subdirectory named *unsorted*.
 
-One method used to create the images include combination of lines and curves, with a given number of vertices. Proportion of curves ranges from 0 to 1. The other method used to create the images was distorting a circle; takes as a parameter a specified number of points around which the circle will be distorted.
-
-Code for generating images can be found in *generating_images* subdirectory
-
-#### Sounds
-
-Sounds were created using the pyo library. Three methods were used to create sounds. Spectral centroid ranges from 0 to 1950
-
-Methods used to generate the sounds: LFO, SAW table, and ROS. LFO also uses sine loop, with random parameters. SAW generator also takes random parameters, and chaotic attractor for the Rossler system. Takes Rossler system, or sine wave, as one of the paramaters. The duration of the sounds ranges from 0.5 seconds to 3.5 seconds.
-
-Code for generating images can be found in *generating_sounds* subdirectory
+To pick some random subset of sounds to be used and sort them according to spectral centroid, run the code within the `Picking and Sorting sounds` notebook.
 
 ### GUI
 
