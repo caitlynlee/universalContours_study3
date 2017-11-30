@@ -5,7 +5,7 @@ import csv
 import json
 
 cwd = os.getcwd()
-mappingFilename = os.path.join(os.path.dirname(cwd), 'conditionMapping.json')
+mappingFilename = os.path.join(os.path.dirname(cwd), "GUI", 'conditionMapping.json')
 with open(mappingFilename) as mappingFile:
     conditionMapping = json.load(mappingFile)
 
@@ -34,7 +34,8 @@ for i in range(60):
 
             # write data from all runs
             for run in range(20):
-                responseFile = os.path.join(str(i), 'stim_response_data_run' + str(run) + '.json')
+                responseFile = os.path.join(os.path.dirname(cwd), "GUI", "output",
+                                    str(i), 'stim_response_data_run' + str(run) + '.json')
                 with open(responseFile) as f:
                     if os.stat(responseFile).st_size == 0:
                         print "empty trial: " + responseFile
@@ -81,7 +82,8 @@ for i in range(60):
 
             # write data from all runs
             for run in range(20):
-                responseFile = os.path.join(str(i), 'stim_response_data_run' + str(run) + '.json')
+                responseFile = os.path.join(os.path.dirname(cwd), "GUI", "output",
+                                    str(i), 'stim_response_data_run' + str(run) + '.json')
                 with open(responseFile) as f:
                     if os.stat(responseFile).st_size == 0:
                         print "empty trial: " + responseFile
@@ -125,7 +127,8 @@ for i in range(60):
 
             # write data from all runs
             for run in range(20):
-                presentFile = os.path.join(str(i), 'Match_presentation_order_data_run' + str(run) + '.json')
+                presentFile = os.path.join(os.path.dirname(cwd), "GUI", "output",
+                                    str(i), 'Match_presentation_order_data_run' + str(run) + '.json')
                 with open(presentFile) as f:
                     if os.stat(presentFile).st_size == 0:
                         print "empty trial: " + responseFile
@@ -133,7 +136,8 @@ for i in range(60):
 
                     order = json.load(f)
 
-                responseFile = os.path.join(str(i), 'Match_stim_response_data_run' + str(run) + '.json')
+                responseFile = os.path.join(os.path.dirname(cwd), "GUI", "output",
+                                    str(i), 'Match_stim_response_data_run' + str(run) + '.json')
                 with open(responseFile) as f:
                     responses = json.load(f)
 
