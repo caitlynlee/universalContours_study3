@@ -3,6 +3,7 @@ import os
 
 import arousal
 import matching
+import showVideos
 
 cwd = os.getcwd()
 mappingFilename = os.path.join(cwd, 'conditionMapping.json')
@@ -13,7 +14,7 @@ with open(mappingFilename) as mappingFile:
 ############# ENTER SUBJECT INFO HERE ############
 ##################################################
 
-subjectID = 1
+subjectID = 0
 subjectAge = 10000
 subjectGender = "deletethisone"
 date = "TEST"
@@ -22,7 +23,11 @@ date = "TEST"
 ##################################################
 ##################################################
 
-if conditionMapping[str(subjectID)] == "positive":
+
+if conditionMapping[str(subjectID)] == "video":
+    showVideos.run(subjectID, subjectAge, subjectGender, date)
+
+elif conditionMapping[str(subjectID)] == "positive":
     arousal.run(subjectID, "positive", subjectAge, subjectGender, date)
 
 elif conditionMapping[str(subjectID)] == "negative":

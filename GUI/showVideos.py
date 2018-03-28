@@ -5,6 +5,9 @@ import itertools
 import random
 import json
 
+VIDEOBINS = ["an", "ha", "sa", "nu"]
+SOUNDBINS = ["F", "N", "W", "T", "A", "L", "E"]
+
 def run(subjectID, subjectAge, subjectGender, date):
     ###
     ### Experiment data
@@ -27,7 +30,7 @@ def run(subjectID, subjectAge, subjectGender, date):
             json.dump(sub_dict, f, sort_keys=True, indent=4)
 
     # get number of runs:
-    num_runs = 2
+    num_runs = 1
 
     ###
     ### Do all the setting up
@@ -48,7 +51,8 @@ def run(subjectID, subjectAge, subjectGender, date):
                                      labels = ('Negative', 'Positive'),
                                      showValue = False, lineColor = 'LightGray',
                                      stretch = 2.5, markerExpansion = 0.5,
-                                     textColor = 'Black', showAccept = False)
+                                     textColor = 'Black', showAccept = False,
+                                     pos=(0,-0.3), textSize=0.6)
 
     arousalRatingScale = visual.RatingScale(mywin, low=1, high=200, marker = mark,
                                      markerColor = 'Black', scale = None,
@@ -56,7 +60,8 @@ def run(subjectID, subjectAge, subjectGender, date):
                                      labels = ('Low energy', 'High Energy'),
                                      showValue = False, lineColor = 'LightGray',
                                      stretch = 2.5, markerExpansion = 0.5,
-                                     textColor = 'Black', showAccept = False)
+                                     textColor = 'Black', showAccept = False ,
+                                     pos=(0,-0.5), textSize=0.6)
 
     next_button_text = visual.TextStim(mywin,text="Next",
                                        color=(0,0,0), colorSpace='rgb255',
@@ -69,20 +74,16 @@ def run(subjectID, subjectAge, subjectGender, date):
     # the play button for sounds
     play_button_text = visual.TextStim(mywin,text="Click play button to play sound",
                                        color=(0,0,0), colorSpace='rgb255',
-                                       units = 'pix', pos=(-200,150), height=18)
+                                       pos=(0,0.2), height=0.05)
     button_vertices = [[-20,33],[-20,-13],[20,10]]
+    play_button = visual.ShapeStim(mywin, units = 'pix', vertices = button_vertices,
+                                   lineColor=(0,0,0),lineColorSpace = 'rgb255',
+                                   pos = (0,0), fillColor = (255,255,255),
+                                   fillColorSpace = 'rgb255')
 
-    # another sound related button - for testing mostly
-    noSound_button_text = visual.TextStim(mywin,text="Could not hear sound",
-                                       color=(0,0,0), colorSpace='rgb255',
-                                       pos=(-200,0), height=12, units = 'pix')
-    noSound_button = visual.Rect(mywin, width=150, height=30, units='pix',
-                                 lineColor=(0,0,0), lineColorSpace='rgb255',
-                                 pos=(-200,-0), fillColor = (255,255,255),
-                                 fillColorSpace = 'rgb255')
 
     # Set the stimulus directory
-    stimulus_dir = os.path.join(os.path.dirname(cwd),'STIMULI')
+    stimulus_dir = os.path.join(os.path.dirname(cwd),'STIMULIv2')
 
 
 
@@ -144,33 +145,70 @@ def run(subjectID, subjectAge, subjectGender, date):
 
 
         # Pick the order of the images and the sounds
-        video_zscore_order = random.sample(range(13),13)
+        video_binOrder = random.sample(range(4),4)
+        sound_binOrder = random.sample(range(7), 7)
 
-        present_order = []
+        # Randomly picking the trials to show videos
+        videoIndices = set(random.sample(range(11), 4))
+
+        vidCount = 0
+        soundCount = 0
 
         ###
         ### Do the drawings
         ###
-        for trial in range(13):
-            # pick an image file
-            video_zscore = video_zscore_order[trial]
-            video_dir = os.path.join(stimulus_dir, "images",
-                                     str(video_zscore))
-            video_file = os.path.join(video_dir, random.choice(os.listdir(video_dir)))
+        for trial in range(11):
+            if trial in videoIndices:
+                mode = "vid"
+                # pick a video file
+                video_bin = VIDEOBINS[video_binOrder[vidCount]]
 
-            # making the stimuli
-            clip = visual.MovieStim(mywin, video_file, loop=false,
-                                    units = 'pix',pos=(0,120))
+                video_dir = os.path.join(stimulus_dir, "videos", video_bin)
+                video_file = os.path.join(video_dir, random.choice(os.listdir(video_dir)))
+                # making the stimuli
+                clip = visual.MovieStim(mywin, video_file, loop=False,
+                                        units = 'pix',pos=(0,120))
 
-            # adding files presented to dictionary
-            stim_dict[trial] = (image_file, sound_file)
+                # adding files presented to dictionary
+                stim_dict[trial] = video_file
+
+                vidCount += 1
+
+            else:
+                mode = "sound"
+                # pick a video file
+                sound_bin = SOUNDBINS[sound_binOrder[soundCount]]
+
+                sound_dir = os.path.join(stimulus_dir, "sounds", sound_bin)
+                sound_file = os.path.join(sound_dir, random.choice(os.listdir(sound_dir)))
+
+                # making the stimuli
+                soundClip = sound.Sound(sound_file, secs = 2)
+
+                # adding files presented to dictionary
+                stim_dict[trial] = sound_file
+
+                soundCount += 1
+
 
             # reset things:
             rating = False
 
             # draw and wait for response
             while rating == False:
-                clip.draw()
+                if mode == "vid":
+                    clip.draw()
+
+                if mode == "sound":
+                    play_button = visual.ShapeStim(mywin, units = 'pix',
+                                                   vertices = button_vertices,
+                                                   lineColor=(0,0,0),
+                                                   lineColorSpace = 'rgb255',
+                                                   pos = (0,0),
+                                                   fillColor = (255,255,255),
+                                                   fillColorSpace = 'rgb255')
+                    play_button_text.draw()
+                    play_button.draw()
 
                 valenceRatingScale.draw()
                 arousalRatingScale.draw()
@@ -181,12 +219,40 @@ def run(subjectID, subjectAge, subjectGender, date):
 
                 mywin.flip()
 
+                if mouse.isPressedIn(play_button, buttons=[0]):
+                    play_button = visual.ShapeStim(mywin, units = 'pix',
+                                                   vertices = button_vertices,
+                                                   lineColor=(0,0,0),
+                                                   lineColorSpace = 'rgb255',
+                                                   pos = (0,0),
+                                                   fillColor = (225,225,225),
+                                                   fillColorSpace = 'rgb255')
+                    play_button.draw()
+                    play_button_text.draw()
+
+                    valenceRatingScale.draw()
+                    arousalRatingScale.draw()
+
+                    next_button.draw()
+                    next_button_text.draw()
+
+                    mywin.flip()
+
+                    mouse.clickReset()
+                    core.wait(0.2)
+                    soundClip.play()
+
                 if mouse.isPressedIn(next_button, buttons = [0]):
                     next_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
                     next_button.draw()
                     next_button_text.draw()
 
-                    clip.draw()
+                    if mode == "vid":
+                        clip.draw()
+
+                    if mode == "sound":
+                        play_button.draw()
+                        play_button_text.draw()
 
                     valenceRatingScale.draw()
                     arousalRatingScale.draw()
@@ -203,7 +269,7 @@ def run(subjectID, subjectAge, subjectGender, date):
                         finalArousalRating = arousalRatingScale.getRating()/2
 
             #if sound is still playing, stop
-            clip.stop()
+            soundClip.stop()
 
             # add response to dictionary, whether or not heard sound
             response_dict[trial] = [finalValenceRating, finalArousalRating]
