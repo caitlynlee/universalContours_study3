@@ -164,11 +164,11 @@ def run(subjectID, subjectAge, subjectGender, date):
             if trial in videoIndices:
                 mode = "vid"
                 # pick a video file
-                #video_bin = VIDEOBINS[video_binOrder[vidCount]]
+                video_bin = VIDEOBINS[video_binOrder[vidCount]]
 
-                #video_dir = os.path.join(stimulus_dir, "videos", video_bin)
-                #video_file = os.path.join(video_dir, random.choice(os.listdir(video_dir)))
-                video_file = os.path.join(stimulus_dir, "videos", "test.mov")
+                video_dir = os.path.join(stimulus_dir, "videos", video_bin)
+                video_file = os.path.join(video_dir, random.choice(os.listdir(video_dir)))
+
                 # making the stimuli
                 clip = visual.MovieStim3(mywin, video_file, loop=True,
                                         units = 'pix',pos=(0,120),  size=(800, 400))
