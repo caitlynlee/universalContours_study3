@@ -33,7 +33,7 @@ def run(subjectID, subjectAge, subjectGender, date):
             json.dump(sub_dict, f, sort_keys=True, indent=4)
 
     # get number of runs:
-    num_runs = 1
+    num_runs = 15
 
     ###
     ### Do all the setting up
@@ -279,7 +279,8 @@ def run(subjectID, subjectAge, subjectGender, date):
                             finalArousalRating = arousalRatingScale.getRating()/2
 
             #if sound is still playing, stop
-            soundClip.stop()
+            if mode == "sound":
+                soundClip.stop()
 
             # add response to dictionary, whether or not heard sound
             response_dict[trial] = [finalValenceRating, finalArousalRating]
