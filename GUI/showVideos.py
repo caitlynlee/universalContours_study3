@@ -1,5 +1,8 @@
 #import some libraries from PsychoPy
-from psychopy import visual, core, event, data, sound
+from psychopy import visual, core, event, data, prefs
+prefs.general['audioLib'] = ['pyo']
+from psychopy import sound
+
 import os
 import itertools
 import random
@@ -161,13 +164,14 @@ def run(subjectID, subjectAge, subjectGender, date):
             if trial in videoIndices:
                 mode = "vid"
                 # pick a video file
-                video_bin = VIDEOBINS[video_binOrder[vidCount]]
+                #video_bin = VIDEOBINS[video_binOrder[vidCount]]
 
-                video_dir = os.path.join(stimulus_dir, "videos", video_bin)
-                video_file = os.path.join(video_dir, random.choice(os.listdir(video_dir)))
+                #video_dir = os.path.join(stimulus_dir, "videos", video_bin)
+                #video_file = os.path.join(video_dir, random.choice(os.listdir(video_dir)))
+                video_file = os.path.join(stimulus_dir, "videos", "test.mov")
                 # making the stimuli
-                clip = visual.MovieStim(mywin, video_file, loop=False,
-                                        units = 'pix',pos=(0,120))
+                clip = visual.MovieStim3(mywin, video_file, loop=True,
+                                        units = 'pix',pos=(0,120),  size=(800, 400))
 
                 # adding files presented to dictionary
                 stim_dict[trial] = video_file
@@ -189,6 +193,8 @@ def run(subjectID, subjectAge, subjectGender, date):
                 stim_dict[trial] = sound_file
 
                 soundCount += 1
+
+                soundPlayed = False
 
 
             # reset things:
@@ -242,6 +248,8 @@ def run(subjectID, subjectAge, subjectGender, date):
                     core.wait(0.2)
                     soundClip.play()
 
+                    soundPlayed = True
+
                 if mouse.isPressedIn(next_button, buttons = [0]):
                     next_button.setFillColor(color = (225,225,225), colorSpace='rgb255')
                     next_button.draw()
@@ -262,11 +270,13 @@ def run(subjectID, subjectAge, subjectGender, date):
                     mouse.clickReset()
                     core.wait(0.2)
 
-                    if valenceRatingScale.getRating() and arousalRatingScale.getRating():
-                        rating = True
+                    if mode == "vid" or soundPlayed == True:
+                        if valenceRatingScale.getRating() and arousalRatingScale.getRating():
 
-                        finalValenceRating = valenceRatingScale.getRating()/2
-                        finalArousalRating = arousalRatingScale.getRating()/2
+                            rating = True
+
+                            finalValenceRating = valenceRatingScale.getRating()/2
+                            finalArousalRating = arousalRatingScale.getRating()/2
 
             #if sound is still playing, stop
             soundClip.stop()
