@@ -94,9 +94,9 @@ def run(subjectID, subjectAge, subjectGender, date):
     ### Show instruction screen
     ###
     instructions = ("In the following task, you will be presented with some visual"
-                    + " or auditory stimuli. Click and drag along the scale at the"
-                    + " bottom of the screen to reflect how negative or positive the"
-                    + " video or sound is.\n\n\n"
+                    + " or auditory stimuli. Click and drag along the scales at the"
+                    + " bottom of the screen to reflect how negative or positive and"
+                    + " how low or high energy the video or sound is.\n\n\n"
                     + " Click the button to start")
     instruction_text = visual.TextStim(mywin,text=instructions,
                                        color=(0,0,0), colorSpace='rgb255',
@@ -170,7 +170,7 @@ def run(subjectID, subjectAge, subjectGender, date):
                 video_file = os.path.join(video_dir, random.choice(os.listdir(video_dir)))
 
                 # making the stimuli
-                clip = visual.MovieStim3(mywin, video_file, loop=True,
+                clip = visual.MovieStim(mywin, video_file, loop=True,
                                         units = 'pix',pos=(0,120),  size=(800, 400))
 
                 # adding files presented to dictionary
@@ -200,9 +200,18 @@ def run(subjectID, subjectAge, subjectGender, date):
             # reset things:
             rating = False
 
+            #movie timer
+            if mode == "vid":
+                timer = core.CountdownTimer(clip.duration)
+
             # draw and wait for response
             while rating == False:
                 if mode == "vid":
+                    if timer.getTime() == 0:
+                        clip = visual.MovieStim(mywin, video_file, loop=True,
+                                                units = 'pix',pos=(0,120),  size=(800, 400))
+                        timer.reset(clip.duration)
+
                     clip.draw()
 
                 if mode == "sound":
