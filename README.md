@@ -1,4 +1,4 @@
-# Universal Contours
+# Universal Contours - Study 3
 Generating and presenting stimuli for universal contours study.
 
 ### STIMULI
