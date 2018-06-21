@@ -5,7 +5,7 @@ import arousal
 import matching
 import showVideos
 
-version = 2
+version = 1
 cwd = os.getcwd()
 mappingFilename = os.path.join(cwd, 'conditionMapping' + str(version) + '.json')
 with open(mappingFilename) as mappingFile:

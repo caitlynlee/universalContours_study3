@@ -7,7 +7,7 @@ import json
 numSubjects = 60
 IDS = random.sample(range(numSubjects),numSubjects)
 idConditions = {}
-version = 2
+version = 1
 
 if version == 1:
     for num in range(20):
